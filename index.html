@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TiendaLujo — Prototipo Accesible</title>
+  <meta name="description" content="Prototipo de tienda accesible (WCAG 2.2) con 3 vistas, modo claro/oscuro, teclado y validación." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="#/inicio" aria-label="Ir a Inicio">
+        <span aria-hidden="true">🛍️</span>
+        <span>TiendaLujo</span>
+      </a>
+
+      <nav aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="#/inicio">Inicio</a></li>
+          <li><a class="nav-link" href="#/login">Login</a></li>
+          <li><a class="nav-link" href="#/tienda">Tienda</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="themeToggle" class="btn btn-secondary" type="button"
+          aria-pressed="false" aria-label="Cambiar a modo oscuro">
+          Modo: Claro
+        </button>
+
+        <!-- Indicador carrito (accesible) -->
+        <a class="btn btn-secondary" href="#/tienda" aria-label="Ir a la tienda y ver carrito">
+          Carrito: <span id="cartCount" class="pill" aria-live="polite">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="container" tabindex="-1">
+    <!-- VISTA 1: INICIO -->
+    <section id="view-inicio" class="view" aria-labelledby="inicio-title">
+      <h1 id="inicio-title">Bienvenido a TiendaLujo</h1>
+      <p class="lead">
+        Una app de e-commerce accesible: catálogo, carrito y checkout con validación.
+      </p>
+
+      <div class="grid-2">
+        <article class="card" aria-labelledby="home-benefits">
+          <h2 id="home-benefits">¿Qué incluye?</h2>
+          <ul>
+            <li>Catálogo con búsqueda y orden.</li>
+            <li>Carrito con cantidades (teclado + lector de pantalla).</li>
+            <li>Checkout en modal con validación clara.</li>
+            <li>Modo claro/oscuro con contraste alto.</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-primary" href="#/tienda">Ir a la Tienda</a>
+            <a class="btn btn-secondary" href="#/login">Login</a>
+          </div>
+        </article>
+
+        <figure class="card figure">
+          <img
+            src="Docs/Smartwatch Neon.jpg"
+            alt="Reloj inteligente y accesorios sobre una mesa, representando productos tecnológicos"
+          />
+          <figcaption>Smartwatch Neo.</figcaption>
+        </figure>
+      </div>
+
+      <section class="card" aria-labelledby="home-a11y">
+        <h2 id="home-a11y">Accesibilidad</h2>
+        <ul>
+          <li>Enlace “Saltar al contenido”.</li>
+          <li>Foco visible para navegación por teclado.</li>
+          <li>Botones con nombres accesibles (aria-label cuando aplica).</li>
+          <li>Mensajes de validación anunciados con aria-live.</li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- VISTA 2: LOGIN -->
+    <section id="view-login" class="view" aria-labelledby="login-title" hidden>
+      <h1 id="login-title">Login</h1>
+      <p class="lead">Accede para guardar tu carrito (demo sin backend).</p>
+
+      <div class="grid-2">
+        <form id="loginForm" class="card" novalidate aria-describedby="login-help">
+          <h2>Accede a tu cuenta</h2>
+          <p id="login-help" class="muted">Campos obligatorios. Los errores se anuncian.</p>
+
+          <div id="loginErrorSummary" class="sr-alert" role="alert" aria-live="assertive" hidden></div>
+
+          <div class="field">
+            <label for="email">Correo</label>
+            <input id="email" name="email" type="email" autocomplete="email"
+                   required aria-describedby="email-hint email-error" />
+            <div id="email-hint" class="hint">Ej: nombre@correo.com</div>
+            <div id="email-error" class="error" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="password">Contraseña</label>
+            <input id="password" name="password" type="password" autocomplete="current-password"
+                   minlength="6" required aria-describedby="password-hint password-error" />
+            <div id="password-hint" class="hint">Mínimo 6 caracteres.</div>
+            <div id="password-error" class="error" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <button class="btn btn-primary" type="submit">Entrar</button>
+            <button class="btn btn-secondary" type="reset">Limpiar</button>
+          </div>
+
+          <p class="muted">¿No tienes cuenta? <a href="#/inicio">Volver al inicio</a>.</p>
+        </form>
+
+        <aside class="card" aria-labelledby="login-tips">
+          <h2 id="login-tips">Tips</h2>
+          <ul>
+            <li>Navega con <kbd>Tab</kbd> y activa con <kbd>Enter</kbd>/<kbd>Espacio</kbd>.</li>
+            <li>En modo oscuro, el contraste sigue siendo alto.</li>
+          </ul>
+          <div class="callout" role="note" aria-label="Nota">
+            Si el formulario es válido, te lleva a la Tienda.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- VISTA 3: TIENDA -->
+    <section id="view-tienda" class="view" aria-labelledby="store-title" hidden>
+      <h1 id="store-title">Tienda</h1>
+      <p class="lead">Explora productos, agrégalos al carrito y finaliza compra (demo).</p>
+
+      <!-- Mensajes de estado (ej: "Agregado al carrito") -->
+      <div id="storeStatus" class="sr-alert" role="status" aria-live="polite" hidden></div>
+
+      <div class="store-layout">
+        <!-- Catálogo -->
+        <section class="card" aria-labelledby="catalog-title">
+          <div class="card-header">
+            <h2 id="catalog-title">Catálogo</h2>
+
+            <div class="toolbar" role="group" aria-label="Controles del catálogo">
+              <div class="field-inline">
+                <label for="search">Buscar</label>
+                <input id="search" type="search" placeholder="Buscar por nombre…" />
+              </div>
+
+              <div class="field-inline">
+                <label for="sort">Ordenar</label>
+                <select id="sort">
+                  <option value="featured">Destacados</option>
+                  <option value="name-asc">Nombre (A–Z)</option>
+                  <option value="price-asc">Precio (menor→mayor)</option>
+                  <option value="price-desc">Precio (mayor→menor)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div id="productGrid" class="product-grid" aria-label="Lista de productos">
+            <!-- JS render -->
+          </div>
+        </section>
+
+        <!-- Carrito -->
+        <aside class="card" aria-labelledby="cart-title">
+          <h2 id="cart-title">Carrito</h2>
+          <p class="muted" id="cartHelp">Ajusta cantidades con botones. Todo es accesible por teclado.</p>
+
+          <ul id="cartList" class="cart-list" aria-describedby="cartHelp">
+            <!-- JS render -->
+          </ul>
+
+          <div class="cart-summary" aria-label="Resumen del carrito">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <strong id="cartSubtotal">$0.00</strong>
+            </div>
+            <div class="summary-row">
+              <span>Envío</span>
+              <strong id="cartShipping">$0.00</strong>
+            </div>
+            <div class="summary-row total">
+              <span>Total</span>
+              <strong id="cartTotal">$0.00</strong>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="checkoutBtn" class="btn btn-primary" type="button">
+              Finalizar compra
+            </button>
+            <button id="clearCartBtn" class="btn btn-secondary" type="button">
+              Vaciar carrito
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Modal Checkout (dialog) -->
+      <dialog id="checkoutDialog" aria-labelledby="checkout-title" aria-describedby="checkout-desc">
+        <h2 id="checkout-title">Checkout</h2>
+        <p id="checkout-desc" class="muted">Completa tus datos. Campos obligatorios.</p>
+
+        <form id="checkoutForm" novalidate>
+          <div id="checkoutErrorSummary" class="sr-alert" role="alert" aria-live="assertive" hidden></div>
+
+          <div class="field">
+            <label for="fullName">Nombre completo</label>
+            <input id="fullName" name="fullName" type="text" required
+                   aria-describedby="fullName-error" />
+            <div id="fullName-error" class="error" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="address">Dirección</label>
+            <input id="address" name="address" type="text" required
+                   aria-describedby="address-error" />
+            <div id="address-error" class="error" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="card">Tarjeta (demo)</label>
+            <input id="card" name="card" inputmode="numeric" placeholder="1234 5678 9012 3456"
+                   required minlength="12" aria-describedby="card-hint card-error" />
+            <div id="card-hint" class="hint">Ingresa mínimo 12 dígitos (demo).</div>
+            <div id="card-error" class="error" aria-live="polite"></div>
+          </div>
+
+          <div class="dialog-actions">
+            <button class="btn btn-primary" type="submit">Pagar</button>
+            <button id="closeCheckout" class="btn btn-secondary" type="button">Cancelar</button>
+          </div>
+        </form>
+      </dialog>
+
+      <!-- Modal Detalle de producto -->
+      <dialog id="productDialog" aria-labelledby="detail-title" aria-describedby="detail-desc">
+        <h2 id="detail-title">Detalle del producto</h2>
+        <p id="detail-desc"></p>
+        <div class="dialog-actions">
+          <button id="closeDetail" class="btn btn-primary" type="button">Cerrar</button>
+        </div>
+      </dialog>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <p>© <span id="year"></span> TiendaLujo.</p>
+      <a href="#/inicio">Volver arriba</a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
